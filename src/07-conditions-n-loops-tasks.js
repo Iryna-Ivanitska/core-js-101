@@ -385,8 +385,8 @@ function isBracketsBalanced(str) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -402,8 +402,22 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  let path = '';
+  function getShorter(a, b) {
+    return a.length <= b.length ? a : b;
+  }
+  let arr = pathes.map((el) => el.slice(0, el.lastIndexOf('/') + 1));
+  for (let i = 0; i < pathes.length; i += 1) {
+    arr = arr.map((el) => el.slice(0, el.lastIndexOf('/') + 1));
+    const first = arr.reduce(getShorter);
+    if (arr.every((item) => item.includes(first))) {
+      path = first;
+      break;
+    }
+    arr = arr.map((el) => el.slice(0, el.lastIndexOf('/')));
+  }
+  return path;
 }
 
 
@@ -425,8 +439,19 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = [];
+  for (let i = 0; i < m1.length; i += 1) {
+    result[i] = [];
+    for (let j = 0; j < m2[0].length; j += 1) {
+      let sum = 0;
+      for (let k = 0; k < m1[0].length; k += 1) {
+        sum += m1[i][k] * m2[k][j];
+      }
+      result[i][j] = sum;
+    }
+  }
+  return result;
 }
 
 
@@ -460,8 +485,29 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  let winner;
+  const leftDiagonal = [];
+  const rightDiagonal = [];
+  for (let i = 0; i < 3; i += 1) {
+    if (position[i].every((el) => el === '0' && position[i].length === 3)) winner = '0';
+    if (position[i].every((el) => el === 'X' && position[i].length === 3)) winner = 'X';
+    leftDiagonal.push(position[i][i]);
+    rightDiagonal.push(position[i][2 - i]);
+  }
+  for (let i = 0; i < 3; i += 1) {
+    const col = [];
+    for (let j = 0; j < 3; j += 1) {
+      col.push(position[j][i]);
+    }
+    if (col.every((el) => el === '0' && col.length === 3)) winner = '0';
+    if (col.every((el) => el === 'X' && col.length === 3)) winner = 'X';
+  }
+  if (leftDiagonal.every((el) => el === '0')) winner = '0';
+  if (leftDiagonal.every((el) => el === 'X')) winner = 'X';
+  if (rightDiagonal.every((el) => el === '0')) winner = '0';
+  if (rightDiagonal.every((el) => el === 'X')) winner = 'X';
+  return winner;
 }
 
 
